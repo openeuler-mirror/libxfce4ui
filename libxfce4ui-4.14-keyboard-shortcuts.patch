@@ -1,0 +1,28 @@
+--- libxfce4kbd-private/xfce4-keyboard-shortcuts.xml.orig	2019-05-17 20:47:46.177418982 -0400
++++ libxfce4kbd-private/xfce4-keyboard-shortcuts.xml	2019-05-17 21:02:11.273407207 -0400
+@@ -12,12 +12,25 @@
+       </property>
+       <property name="&lt;Primary&gt;&lt;Alt&gt;Delete" type="string" value="xflock4"/>
+       <property name="&lt;Primary&gt;&lt;Alt&gt;l" type="string" value="xflock4"/>
++      <property name="&lt;Control&gt;&lt;Alt&gt;Escape" type="string" value="xkill"/>
+       <property name="&lt;Primary&gt;&lt;Alt&gt;t" type="string" value="exo-open --launch TerminalEmulator"/>
+       <property name="XF86Display" type="string" value="xfce4-display-settings --minimal"/>
+       <property name="&lt;Super&gt;p" type="string" value="xfce4-display-settings --minimal"/>
+       <property name="&lt;Primary&gt;Escape" type="string" value="xfdesktop --menu"/>
++      <property name="XF86LogOff" type="string" value="xfce4-session-logout"/>
++      <property name="Print" type="string" value="xfce4-screenshooter -f"/>
++      <property name="&lt;Alt&gt;Print" type="string" value="xfce4-screenshooter -w"/>
+       <property name="XF86WWW" type="string" value="exo-open --launch WebBrowser"/>
+       <property name="XF86Mail" type="string" value="exo-open --launch MailReader"/>
++      <property name="XF86Calendar" type="string" value="orage"/>
++      <property name="XF86Memo" type="string" value="xfce4-notes"/>
++      <property name="XF86Terminal" type="string" value="xfce4-terminal"/>
++      <property name="XF86Explorer" type="string" value="Thunar"/>
++      <property name="XF86AudioMedia" type="string" value="pragha"/>
++      <property name="XF86AudioPlay" type="string" value="pragha --pause"/>
++      <property name="XF86AudioPrev" type="string" value="pragha --prev"/>
++      <property name="XF86AudioNext" type="string" value="pragha --next"/>
++      <property name="XF86Calculator" type="string" value="galculator"/>
+       <property name="Print" type="string" value="xfce4-screenshooter"/>
+     </property>
+   </property>
