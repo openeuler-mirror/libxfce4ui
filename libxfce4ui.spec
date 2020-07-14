@@ -1,7 +1,7 @@
 %global xfceversion 4.14
 Name:           libxfce4ui
 Version:        4.14.1
-Release:        1%{?dist}
+Release:        1
 Summary:        Commonly used Xfce widgets
 License:        LGPLv2+
 #Group:          Development/Libraries
