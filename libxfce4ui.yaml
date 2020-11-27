@@ -1,0 +1,4 @@
+version_control: git
+src_repo: 
+tag_prefix: "libxfce4ui-"
+seperator: "."
