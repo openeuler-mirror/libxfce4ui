@@ -1,21 +1,24 @@
-%global xfceversion 4.14
+%global xfceversion 4.16
+%global namespc Libxfce4ui
+
 Name:           libxfce4ui
-Version:        4.14.1
+Version:        4.16.0
 Release:        1
 Summary:        Commonly used Xfce widgets
+
 License:        LGPLv2+
-#Group:          Development/Libraries
 URL:            http://xfce.org/
 Source0:        http://archive.xfce.org/src/xfce/%{name}/%{xfceversion}/%{name}-%{version}.tar.bz2
+
+## Downstream patches
 # add more keyboard shortcuts to make multimedia keyboards work out of the box
 # Terminal changed to xfce4-terminal in the patch
 Patch10:        libxfce4ui-%{xfceversion}-keyboard-shortcuts.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-#BuildArch:      noarch
 
 BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig(gobject-2.0) >= 2.24.0
 BuildRequires:  pkgconfig(gtk+-2.0) >= 2.20.0
+BuildRequires:  libSM-devel
 BuildRequires:  pkgconfig(libxfce4util-1.0) >= %{xfceversion}
 BuildRequires:  pkgconfig(libxfconf-0) >= %{xfceversion}
 BuildRequires:  pkgconfig(libstartup-notification-1.0) >= 0.4
@@ -24,13 +27,25 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  gtk3-devel
 BuildRequires:  glade-devel
 BuildRequires:  gettext
-BuildRequires:  gobject-introspection-devel
 BuildRequires:  intltool
-BuildRequires:  libSM-devel
+BuildRequires:  gobject-introspection-devel
 BuildRequires:  vala
+BuildRequires:  make
+BuildRequires:  libgtop2-devel
+
+Obsoletes:      libxfcegui4 < 4.10.0-9
 
 %description
 Libxfce4ui is used to share commonly used Xfce widgets among the Xfce applications.
+
+
+%package -n     xfce4-about
+Summary:        Xfce 4 'About' dialog
+
+%description -n xfce4-about
+This package contains the 'About Xfce' dialog with info on the desktop
+environment, it's contributors, and it's licensing.
+
 
 %package        devel
 Summary:        Development files for %{name}
@@ -39,9 +54,12 @@ Requires:       gtk2-devel
 Requires:       libxfce4util-devel
 Requires:       glade-devel
 Requires:       pkgconfig
+Obsoletes:      libxfcegui4-devel < 4.10.0-9
 
 %description    devel
-This package contains libraries and header files for developing applications that use %{name}.
+The %{name}-devel package contains libraries and header files for
+developing applications that use %{name}.
+
 
 %prep
 %setup -q
@@ -61,25 +79,38 @@ export LD_LIBRARY_PATH="`pwd`/libxfce4ui/.libs"
 %make_install
 
 # fix permissions for installed libraries
-chmod 755 $RPM_BUILD_ROOT/%{_libdir}/*.so
+chmod 755 %{buildroot}%{_libdir}/*.so
 
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %find_lang %{name}
 
+# Move xfce4-about to the 'Documentation' category
+desktop-file-install \
+  --delete-original \
+  --remove-category=X-Xfce-Toplevel \
+  --add-category=Documentation \
+  --add-category=System \
+  --dir=%{buildroot}%{_datadir}/applications \
+  %{buildroot}%{_datadir}/applications/xfce4-about.desktop
+
+
 %ldconfig_scriptlets
+
 
 %files -f %{name}.lang
 %license COPYING
-%doc AUTHORS NEWS README THANKS
+%doc AUTHORS NEWS THANKS
 %config(noreplace) %{_sysconfdir}/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 %{_libdir}/*.so.*
-%{_libdir}/girepository-1.0/%{name}-2.0.typelib
-%{_bindir}/xfce4-about
-%{_datadir}/gir-1.0/%{name}-2.0.gir
+%{_libdir}/girepository-1.0/%{namespc}-2.0.typelib
+%{_datadir}/gir-1.0/%{namespc}-2.0.gir
 %{_datadir}/vala/vapi/%{name}-2.deps
 %{_datadir}/vala/vapi/%{name}-2.vapi
+
+%files -n xfce4-about
+%{_bindir}/xfce4-about
 %{_datadir}/applications/xfce4-about.desktop
-%{_datadir}/icons/hicolor/48x48/apps/xfce4-logo.png
+%{_datadir}/icons/hicolor/*/apps/*xfce*
 
 %files devel
 %doc TODO
@@ -92,5 +123,8 @@ find %{buildroot} -name '*.la' -exec rm -f {} ';'
 %{_datadir}/glade/pixmaps/hicolor/*/actions/*
 
 %changelog
+* Fri Jun 18 2021 zhanglin <lin.zhang@turbolinux.com.cn> - 4.16.0-1
+- Update to 4.16.0
+
 * Wed Jul 8 2020 Dillon Chen <dillon.chen@turbolinux.com.cn> - 4.14.1-1
 - Init package
